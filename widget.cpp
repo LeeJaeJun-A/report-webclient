@@ -21,6 +21,14 @@ Widget::~Widget()
     delete ui;
 }
 
+void Widget::updateEnabled(bool isConnected){
+    ui->pbConnect->setEnabled(isConnected);
+    ui->pbDisconnect->setEnabled(!isConnected);
+    ui->leHost->setEnabled(isConnected);
+    ui->lePort->setEnabled(isConnected);
+    ui->cbSSL->setEnabled(isConnected);
+}
+
 void Widget::doReadyRead(){
     if(isChecked_)
         ui->pteMessage->insertPlainText(sslSocket_.readAll());
@@ -43,11 +51,7 @@ void Widget::on_pbConnect_clicked()
         sslSocket_.connectToHostEncrypted(ui->leHost->text(),ui->lePort->text().toUShort());//SSL needs Encrypted
     else
         tcpSocket_.connectToHost(ui->leHost->text(), ui->lePort->text().toUShort());
-    ui->pbConnect->setEnabled(false);
-    ui->pbDisconnect->setEnabled(true);
-    ui->leHost->setEnabled(false);
-    ui->lePort->setEnabled(false);
-    ui->cbSSL->setEnabled(false);
+    updateEnabled(false);
 }
 
 void Widget::on_pbDisconnect_clicked()
@@ -56,11 +60,7 @@ void Widget::on_pbDisconnect_clicked()
         sslSocket_.close();
     else
         tcpSocket_.close();
-    ui->pbConnect->setEnabled(true);
-    ui->pbDisconnect->setEnabled(false);
-    ui->leHost->setEnabled(true);
-    ui->lePort->setEnabled(true);
-    ui->cbSSL->setEnabled(true);
+    updateEnabled(true);
 }
 
 
@@ -76,11 +76,7 @@ void Widget::on_pbSend_clicked()
 
 void Widget::on_cbSSL_stateChanged(int arg1)
 {
-    if(ui->cbSSL->isChecked()){
-        isChecked_ = true;
-    }else{
-        isChecked_ = false;
-    }
+    isChecked_ = ui->cbSSL->isChecked();
 }
 
 

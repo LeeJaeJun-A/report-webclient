@@ -28,6 +28,7 @@ public slots:
     void doConnected();
     void doDisconnected();
     void doReadyRead();
+    void updateEnabled(bool isConnected);
 
 private slots:
     void on_pbConnect_clicked();
