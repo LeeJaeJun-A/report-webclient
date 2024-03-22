@@ -11,6 +11,9 @@ Widget::Widget(QWidget *parent)
     QObject::connect(&sslSocket_, &QAbstractSocket::connected, this, &Widget::doConnected);
     QObject::connect(&sslSocket_, &QAbstractSocket::disconnected, this, &Widget::doDisconnected);
     QObject::connect(&sslSocket_, &QAbstractSocket::readyRead, this, &Widget::doReadyRead);
+    QObject::connect(&tcpSocket_, &QAbstractSocket::connected, this, &Widget::doConnected);
+    QObject::connect(&tcpSocket_, &QAbstractSocket::disconnected, this, &Widget::doDisconnected);
+    QObject::connect(&tcpSocket_, &QAbstractSocket::readyRead, this, &Widget::doReadyRead);
 }
 
 Widget::~Widget()
